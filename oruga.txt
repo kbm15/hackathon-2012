@@ -1,0 +1,57 @@
+//Arduino PWM Speed Control:
+#define IRpin_PIN PIND
+#define IRpin 2
+
+int orangeLedPin =  7;
+int E1 = 9;  
+int M1 = 8; 
+int E2 = 10;                      
+int M2 = 11;  
+int value1, value2, on;
+int val;
+
+
+
+void setup() 
+{ 
+    pinMode(M1, OUTPUT);   
+    pinMode(M2, OUTPUT); 
+    pinMode(12, INPUT);
+    pinMode(orangeLedPin, OUTPUT); 
+    Serial.begin(9600);
+} 
+
+void loop() {
+  
+  while (IRpin_PIN & (1 << IRpin)) {
+    delay(100);
+    digitalWrite(orangeLedPin, LOW);
+  }
+  digitalWrite(orangeLedPin, HIGH);
+  Serial.print('H');
+  delay(1000);
+  if (Serial.available()) {
+    val = Serial.read();
+    if (val == 'C') {
+      getDrink();
+    } 
+  }
+}
+
+void getDrink() {
+    digitalWrite(M1,HIGH);   
+    digitalWrite(M2, LOW);           
+    analogWrite(E1, 100);  
+    analogWrite(E2, 100);   
+    delay(3000);
+    analogWrite(E1, 0); 
+    analogWrite(E2, 0); 
+    delay(10000);
+    digitalWrite(M1,LOW);   
+    digitalWrite(M2, HIGH);
+    analogWrite(E1, 100);  
+    analogWrite(E2, 100);   
+    delay(3000);
+    analogWrite(E1, 0); 
+    analogWrite(E2, 0);   
+}

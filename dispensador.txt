@@ -1,0 +1,38 @@
+#include <Servo.h>
+
+Servo servoR;
+int servoPinR =  8;
+int val;
+
+void setup()
+{
+  servoR.attach(servoPinR);
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  servoR.write(0);
+  if (Serial.available()) {
+    val = Serial.read();
+    if (val == 'H') {
+      delay(20);
+      Serial.print('C');
+      rotate();
+    }    
+  }
+}
+
+void rotate() {
+  delay(5000);
+  for(int i=0; i<160; i++){
+    servoR.write(i);
+    delay(20);
+  }
+  delay(1400);
+  for(int i=160; i>=0; i--){
+   servoR.write(i);
+   delay(20);
+  }
+
+}
